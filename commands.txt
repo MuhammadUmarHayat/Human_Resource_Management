@@ -1,0 +1,264 @@
+
+I have installed these packages in my laptop to develop a project. now i want to create Role based access system for Admin, HR, Employee. 
+each user has own unique role. guide me step by step?
+composer create-project laravel/laravel hrms
+cd hrms
+composer require laravel/breeze --dev
+//for vu and inertia
+php artisan breeze:install vue
+for Role based Access Control
+composer require spatie/laravel-permission
+publish package
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+
+
+npm install 
+ npm run dev 
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=hrmsdb
+DB_USERNAME=root
+DB_PASSWORD=
+
+
+php artisan migrate
+
+php artisan make:seeder RolePermissionSeeder
+php artisan db:seed
+//create admin
+php artisan tinker
+
+$user=App\Models\User::create([
+'name'=>'Super Admin',
+'email'=>'admin@gmail.com',
+'password'=>bcrypt('12345678')
+]);
+$user->assignRole('Admin');
+exit
+
+php artisan tinker
+$user=App\Models\User::create([
+'name'=>'HR Manager',
+'email'=>'hr@gmail.com',
+'password'=>bcrypt('12345678')
+]);
+
+$user->assignRole('HR');
+
+$user=App\Models\User::create([
+'name'=>'Ali',
+'email'=>'employee@gmail.com',
+'password'=>bcrypt('12345678')
+]);
+
+$user->assignRole('Employee');
+
+
+exit
+auth()->user()->hasRole('Admin');
+
+php artisan --version or php artisan -v
+Laravel Framework 12.64.0
+add middle warein bootstrap/app.php
+php artisan make:controller AdminController
+php artisan make:controller HRController
+php artisan make:controller EmployeeController
+
+php artisan make:controller DashboardController
+
+
+
+route setting and login 
+
+ Employees/
+            ├── Departments/
+            ├── Designations/
+            ├── Attendance/
+            └── Payroll/
+
+php artisan serve
+
+force fully logout on dashboard usinf f12
+fetch('/logout', {
+    method: 'POST',
+    headers: {
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
+}).then(() => window.location.href = '/');
+
+or 
+// Inertia ka built-in visit method use karte hue direct POST request
+window._inertia?.post('/logout') || window.router?.post('/logout');
+or
+var form = document.createElement('form');
+form.method = 'POST';
+form.action = '/logout';
+var csrfInput = document.createElement('input');
+csrfInput.type = 'hidden';
+csrfInput.name = '_token';
+// Agar Laravel session cookie hai to direct submit chal jayega
+form.appendChild(csrfInput);
+document.body.appendChild(form);
+form.submit();
+php artisan make:model Department -m
+php artisan migrate
+php artisan make:controller Admin/DepartmentController --resource
+php artisan make:request DepartmentRequest
+
+php artisan make:model Designation -m
+php artisan make:controller Admin/DesignationController --resource
+php artisan make:request DesignationRequest
+
+
+php artisan migrate
+
+php artisan make:request DesignationRequest
+
+
+
+php artisan make:controller DesignationController
+
+php artisan make:model Employee -m
+php artisan migrate
+php artisan storage:link
+php artisan make:request EmployeeRequest
+php artisan make:controller Admin/EmployeeController --resource
+
+resources/js/Components/Employees/EmployeeForm.vue
+
+
+routes/admin.php
+
+routes/hr.php
+
+routes/employee.php
+
+php artisan route:list
+
+check bootstrap is installed
+npm list bootstrap
+install bootstrap
+npm install bootstrap @popperjs/core
+
+npm run dev
+
+<form @submit.prevent="submit" enctype="multipart/form-data">
+
+php artisan make:model Attendance -m
+
+php artisan migrate
+
+php artisan make:controller Admin/AttendanceController --resource
+php artisan make:request AttendanceRequest
+
+custom command bnao jo dono servers ko ikathy chala day ta k mjhy bar bar dono commands na daini prian?
+npm run dev
+php artisan serve
+//install package
+npm install concurrently --save-dev
+then 
+composer dev
+-----alternate 
+composer.json
+"scripts": {
+    "dev": [
+        "Composer\\Config::disableProcessTimeout",
+        "npx concurrently \"php artisan serve\" \"npm run dev\""
+    ]
+}
+composer dump-autoload
+composer dev
+ 
+ npm run dev
+ php artisan serve
+ 
+ cache clear
+ php artisan optimize:clear
+ check dir
+ dir resources\js\Pages\Admin\Attendance
+ 
+php artisan make:model LeaveType -m
+php artisan make:model Leave -m
+php artisan migrate
+php artisan make:controller Admin/LeaveController --resource
+
+
+php artisan make:controller Admin/LeaveApplicationController --resource
+
+
+php artisan route:list
+49.6 per jany say phly mjhy btain k ya teen icons show kio nhi ho rhay.. bootstrap ki css to apply ho rhi hai
+<i class="bi bi-eye"></i>
+   <i class="bi bi-pencil"></i>
+  <i class="bi bi-trash"></i>
+  
+
+  
+   npm run dev
+  php artisan serve
+ last work abhi rhta hai:
+
+ 
+php artisan make:model Payroll -m
+
+php artisan migrate
+
+php artisan make:controller Admin/PayrollController --resource
+
+
+php artisan route:list --name=admin.payroll
+resources/js/Pages/Admin/Payroll/Index.vue
+
+Lesson 50.7 per jany sy pahly ya issue solve kr do..
+php artisan optimize:clear
+
+php artisan route:list --name=admin.payroll
+php artisan optimize:clear
+php artisan route:list --name=admin.payroll
+php artisan route:list --path=hr
+php artisan optimize:clear
+php artisan route:list --path=employee
+php artisan route:list --path=login
+
+
+dd([
+            'logged_in_user' => auth()->user()->name,
+            'logged_in_email' => $email,
+            'employee_found' => $employee ? 'YES' : 'NO',
+            'employee_id' => $employee?->id,
+            'employee_email' => $employee?->email,
+        ]);
+		
+		
+		
+		php artisan optimize:clear
+		php artisan route:clear
+		
+		fetch('/logout', {
+    method: 'POST',
+    headers: {
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content,
+        'X-Requested-With': 'XMLHttpRequest'
+    }
+}).then(() => window.location.href = '/');
+
+//check existing roles
+php artisan tinker
+Spatie\Permission\Models\Role::pluck('name');
+//fetch user
+$user = App\Models\User::where('email', 'emp1@gmail.com')->first();
+$user->assignRole('Employee');//assign role
+$user->getRoleNames();
+exit
+
+App\Models\Employee::where('email', 'emp1@gmail.com')->first();
+it returns null but this email is existing in the users table
+====================
+over write origional commit
+git pull origion main --allow-unrelated-histories
+git status
+git push -u origion main
